@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  todo-database:
+    container_name: compose-todo-database
+    image: postgres:latest
+
+    environment:
+      POSTGRES_DB: tododb
+      POSTGRES_USER: todouser
+      POSTGRES_PASSWORD: todopassword
+
+    networks:
+      - todo-network
+
+    ports:
+      - "5432:5432"
+
+  todo-backend:
+    container_name: compose-todo-backend
+    image: simpletodoapp.azurecr.io/simpletodoapp-backend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    environment:
+      DATABASE_HOST: todo-database
+      DATABASE_USER: todouser
+      DATABASE_PASS: todopassword
+
+    depends_on:
+      - todo-database
+
+    ports:
+      - "3001:3001"
+
+    networks:
+      - todo-network
+
+networks:
+  todo-network:
+    driver: bridge
