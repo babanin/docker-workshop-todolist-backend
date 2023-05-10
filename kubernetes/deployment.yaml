@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todolist-backend
+spec:
+  selector:
+    matchLabels:
+      app: todolist-backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: todolist-backend
+    spec:
+      containers:
+      - name: todolist-backend
+        image: simpletodoapp.azurecr.io/simpletodoapp-backend:latest
+        ports:
+          - containerPort: 3001
+        env:
+          - name: DATABASE_HOST
+            valueFrom:
+              secretKeyRef:
+                name: todolist-backend-secret
+                key: hostname
+          - name: DATABASE_USER
+            valueFrom:
+              secretKeyRef:
+                name: todolist-backend-secret
+                key: username
+          - name: DATABASE_PASS
+            valueFrom:
+              secretKeyRef:
+                name: todolist-backend-secret
+                key: password

@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: todolist-backend-service
+spec:
+  type: ClusterIP
+  ports:
+  - port: 3001
+  selector:
+    app: todolist-backend
