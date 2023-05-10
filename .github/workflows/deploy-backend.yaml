@@ -59,10 +59,10 @@ jobs:
             - name: app-env
               uses: azure/k8s-create-secret@v4
               with:
-                namespace: 'default'
+                namespace: 'simpletodoapp'
                 secret-type: 'generic'
                 arguments:  --from-literal=hostname=${{ secrets.PGSQL_HOSTNAME }} --from-literal=username=${{ secrets.PGSQL_USERNAME }} --from-literal=password=${{ secrets.PGSQL_PASSWORD }}
-                secret-name: simpletodoapp
+                secret-name: todolist-backend-secret
             - uses: Azure/k8s-deploy@v4
               name: Deploys application
               with:
