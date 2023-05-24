@@ -5,7 +5,6 @@ import com.backend.todolist.model.Todo;
 import com.backend.todolist.service.TodoService;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +22,11 @@ import java.util.List;
         @ApiResponse(code = 404, message = "Not Found", response = CustomException.class)
 })
 public class TodoController {
-    @Autowired
-    private TodoService todoService;
+    private final TodoService todoService;
+
+    public TodoController(TodoService todoService) {
+        this.todoService = todoService;
+    }
 
     @ResponseStatus(code = HttpStatus.CREATED)
     @RequestMapping(value = "/api/todo", method = RequestMethod.POST)
@@ -34,7 +36,7 @@ public class TodoController {
 
     @ResponseStatus(code = HttpStatus.OK)
     @RequestMapping(value = "/api/todo", method = RequestMethod.GET)
-    public ResponseEntity<List<Todo>> readAll(Principal principal, @RequestParam(required = false) String isCompleted) {
+    public ResponseEntity<List<Todo>> readAll(Principal principal, @RequestParam(required = false) Boolean isCompleted) {
         if (isCompleted != null) {
             return new ResponseEntity<>(todoService.readAllByIsCompleted(principal.getName(), isCompleted), HttpStatus.OK);
         }
@@ -43,7 +45,7 @@ public class TodoController {
 
     @ResponseStatus(code = HttpStatus.OK)
     @RequestMapping(value = "/api/todo/count", method = RequestMethod.GET)
-    public ResponseEntity<CountResponse> countAll(Principal principal, @RequestParam(required = false) String isCompleted) {
+    public ResponseEntity<CountResponse> countAll(Principal principal, @RequestParam(required = false) Boolean isCompleted) {
         if (isCompleted != null) {
             return new ResponseEntity<>(todoService.countAllByIsCompleted(principal.getName(), isCompleted), HttpStatus.OK);
         }
@@ -52,7 +54,10 @@ public class TodoController {
 
     @ResponseStatus(code = HttpStatus.OK)
     @RequestMapping(value = "/api/todo/{pageNumber}/{pageSize}", method = RequestMethod.GET)
-    public ResponseEntity<List<Todo>> readAllPageable(Principal principal, @PathVariable String pageNumber, @PathVariable String pageSize, @RequestParam(required = false) String isCompleted) {
+    public ResponseEntity<List<Todo>> readAllPageable(Principal principal,
+                                                      @PathVariable Integer pageNumber,
+                                                      @PathVariable Integer pageSize,
+                                                      @RequestParam(required = false) Boolean isCompleted) {
         if (isCompleted != null) {
             return new ResponseEntity<>(todoService.readAllByIsCompletedPageable(principal.getName(), isCompleted, pageNumber, pageSize), HttpStatus.OK);
         }

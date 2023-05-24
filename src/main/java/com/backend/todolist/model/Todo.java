@@ -27,7 +27,6 @@ public class Todo {
     private boolean isCompleted;
 
     protected Todo() {
-
     }
 
     public Todo(String title, Date targetDate, String username) {
@@ -42,7 +41,7 @@ public class Todo {
         return id;
     }
 
-    public void setIdd(long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
