@@ -46,7 +46,7 @@ public class TodoService {
         return todoPagingRepository.findAllByUsername(username, pageable);
     }
 
-    public List<Todo> readAllByIsCompleted(String username, boolean isCompleted) {
+    public List<Todo> readAllByIsCompleted(String username, Boolean isCompleted) {
         return todoRepository.findAllByUsernameAndIsCompleted(username, isCompleted);
     }
 

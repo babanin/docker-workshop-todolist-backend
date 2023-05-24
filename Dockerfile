@@ -1,9 +1,9 @@
-FROM maven:3.6.3-openjdk-11-slim AS builder
+FROM maven:3.9.2-eclipse-temurin-20 AS builder
 WORKDIR /build
 COPY . .
-RUN mvn clean package -DskipTests
+RUN mvn package
 
-FROM eclipse-temurin:11.0.19_7-jre-jammy
+FROM eclipse-temurin:20
 
 ENV USER_ID=65535
 ENV GROUP_ID=65535

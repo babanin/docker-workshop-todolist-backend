@@ -17,14 +17,14 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 public class JwtTokenFilter extends GenericFilterBean {
-    private JwtTokenGenerator jwtTokenGenerator;
+    private final JwtTokenGenerator jwtTokenGenerator;
 
     public JwtTokenFilter(JwtTokenGenerator jwtTokenGenerator) {
         this.jwtTokenGenerator = jwtTokenGenerator;
     }
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain) {
         try {
             String token = jwtTokenGenerator.resolveToken((HttpServletRequest) req);
             if (token != null && jwtTokenGenerator.validateToken(token)) {
